@@ -49,22 +49,24 @@ User_Schema.pre("save", function (next) {
   next();
 });
 
-// User_Schema.static("matchpassword", async function (email, password) {
-//   const user = await this.findOne({ email });
-//   if (!user) {
-//     return false;
-//   }
-//   const salt = user.salt;
-//   const hashedpass = user.password;
+User_Schema.static("matchpassword", async function (email, password) {
+  const user = await this.findOne({ email });
+  if (!user) {
+    return false;
+  }
+  // console.log("From the matchpassword", user);
+  const salt = user.salt;
+  const hashedpass = user.password;
 
-//   const userProvidedhash = createHmac("sha256", salt)
-//     .update(password)
-//     .digest("hex");
-//   return { ...user, password: undefined, salt: undefined };
-// });
-// if (hashedpass !== userProvidedhash) {
-//   throw new Error("Incorrect Password");
-// }
+  const userProvidedhash = createHmac("sha256", salt)
+    .update(password)
+    .digest("hex");
+  if (hashedpass !== userProvidedhash) {
+    throw new Error("Incorrect Password");
+  }
+  // return { ...user, password: undefined, salt: undefined };
+  return user;
+});
 const userSchema = mongoose.model("users", User_Schema);
 
 module.exports = { userSchema };

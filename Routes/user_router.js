@@ -24,10 +24,12 @@ userRouter.post("/signup", async (req, res) => {
 userRouter.get("/login", (req, res) => {
   return res.render("login");
 });
-// userRouter.post("/login", async (req, res) => {
-//   const data = req.body;
-//   const user = userSchema.matchpassword(data.email, data.password);
-//   console.log("USER", user);
-//   return res.redirect("/");
-// });
+userRouter.post("/login", async (req, res) => {
+  const data = req.body;
+  const user = await userSchema.matchpassword(data.email, data.password);
+  // IF NOT USE AWAIT GET PROMISE AS PENDING
+  // matchpassword is in userschema itself
+  console.log("USER", user);
+  return res.redirect("/");
+});
 module.exports = { userRouter };
