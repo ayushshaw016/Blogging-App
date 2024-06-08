@@ -14,7 +14,6 @@ const User_Schema = mongoose.Schema(
     },
     salt: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
@@ -38,16 +37,34 @@ const User_Schema = mongoose.Schema(
 // PRE SAVE
 User_Schema.pre("save", function (next) {
   const user = this;
-  if (!user.isModidifed("password")) return;
+  if (!user) return;
   const salt = randomBytes(16).toString();
-  const hashedpassword = createHmac("sha26", salt)
+  // const salt = "RandomSalt";
+  const hashedpassword = createHmac("sha256", salt)
     .update(user.password)
     .digest("hex");
 
   this.salt = salt;
   this.password = hashedpassword;
+  next();
 });
 
+// User_Schema.static("matchpassword", async function (email, password) {
+//   const user = await this.findOne({ email });
+//   if (!user) {
+//     return false;
+//   }
+//   const salt = user.salt;
+//   const hashedpass = user.password;
+
+//   const userProvidedhash = createHmac("sha256", salt)
+//     .update(password)
+//     .digest("hex");
+//   return { ...user, password: undefined, salt: undefined };
+// });
+// if (hashedpass !== userProvidedhash) {
+//   throw new Error("Incorrect Password");
+// }
 const userSchema = mongoose.model("users", User_Schema);
 
 module.exports = { userSchema };
