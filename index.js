@@ -7,6 +7,7 @@ const cookieparser = require("cookie-parser");
 const {
   checkForAuthenticationCookie,
 } = require("./Middleware/Middleware_Auth");
+const { blogrouter } = require("./Routes/blog_router");
 // SETTING THE VIEW ENGINE AS ejs
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
@@ -22,4 +23,5 @@ app.get("/", (req, res) => {
     user: req.user,
   });
 });
+app.use("/blog", blogrouter);
 app.use("/user", userRouter);

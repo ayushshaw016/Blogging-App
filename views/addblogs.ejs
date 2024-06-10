@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("./Partials/head.ejs") %>
+  </head>
+  <body>
+    <%- include("./Partials/navbar.ejs") %>
+    <h2>Add Your Blogs</h2>
+    <form method="post" action="/blog/addblog" enctype="multipart/form-data">
+      <input placeholder="Add Title" name="title" />
+      <input placeholder="Add Content" name="content" />
+      <input type="file" name="coverimg" />
+      <button type="submit">Add</button>
+    </form>
+    <%- include("./Partials/footer.ejs") %>
+  </body>
+</html>
