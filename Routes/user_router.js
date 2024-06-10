@@ -24,12 +24,26 @@ userRouter.post("/signup", async (req, res) => {
 userRouter.get("/login", (req, res) => {
   return res.render("login");
 });
+
 userRouter.post("/login", async (req, res) => {
   const data = req.body;
-  const user = await userSchema.matchpassword(data.email, data.password);
-  // IF NOT USE AWAIT GET PROMISE AS PENDING
-  // matchpassword is in userschema itself
-  console.log("USER", user);
-  return res.redirect("/");
+  try {
+    const token = await userSchema.matchpassword(data.email, data.password);
+    // IF NOT USE AWAIT GET PROMISE AS PENDING
+    // matchpassword is in userschema itself
+    // console.log("USER TOKEN", token);
+
+    return res.cookie("token", token).redirect("/");
+  } catch (error) {
+    return res.render("login", {
+      error: "Invalid username or password",
+    });
+  }
 });
+
+// Creating thr logout
+userRouter.get("/logout", (req, res) => {
+  return res.clearCookie("token").redirect("/");
+});
+
 module.exports = { userRouter };
