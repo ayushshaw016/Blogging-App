@@ -6,6 +6,13 @@
   <body>
     <%- include('./Partials/navbar.ejs') %>
     <h2>Hello from the server</h2>
-    <%- include('./Partials/footer.ejs') %>
+    <%- include('./Partials/footer.ejs') %> <% blogs.forEach(vlog => { %>
+    <div style="margin: 0px 4px">
+      <h2><%= vlog.title %></h2>
+      <!-- <p><%= vlog.content %></p> -->
+      <a href="/blog/<%=vlog._id%>">View</a>
+      <img src="<%= vlog.coverimg %>" />
+    </div>
+    <% }) %>
   </body>
 </html>
